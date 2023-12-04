@@ -2,46 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Comment;
+use App\Models\Post;
+use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    public function create()
+    public function store(Request $request, Post $post)
     {
-        return view('comment.create');
-    }
+        // バリデーションルールの設定
+        $rules = [
+            'content' => 'required|string',
+        ];
 
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'nullable',
-            'content' => 'required|max:50',
-        ]);
+        // バリデーションの実行
+        $request->validate($rules);
 
-        // 投稿IDを取得する（例：ルートパラメータから取得する場合）
-        $postId = $request->route('post'); // ルートパラメータの名前に合わせて変更してください
-
-        // バリデーションを通過した後の処理
+        // 新しいコメントを作成して保存
         $comment = new Comment();
-        $comment->name = $validated['name'];
-        $comment->content = $validated['content'];
-
-        // 関連する投稿のIDを設定
-        $comment->post_id = $postId;
-
+        $comment->content = $request->input('content');
+        $comment->post_id = $post->id; // 投稿とコメントを関連付ける
         $comment->save();
 
-        // 保存したコメントを関連する投稿のページにリダイレクト
-        return redirect()->route('post.show', ['post' => $postId]);
+        // 成功時のリダイレクトなどを適切に処理する
+        return redirect()->route('posts.show', ['post' => $post->id])->with('success', 'コメントが追加されました。');
     }
 
-    public function destroy($post, Comment $comment)
+    public function destroy(Comment $comment)
     {
-        // コメントの削除処理
+        // コメントを削除
         $comment->delete();
 
-        // リダイレクト先を指定（例：投稿の詳細ページに戻る）
-        return redirect()->route('post.show', ['post' => $post]);
+        // 成功時のリダイレクトなどを適切に処理する
+        return redirect()->back()->with('success', 'コメントが削除されました。');
     }
 }
+
+?>

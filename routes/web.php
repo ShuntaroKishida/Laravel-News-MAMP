@@ -1,32 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+Route::get('/', [PostController::class, 'index'])->name('posts.index');
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
 
-Route::get('/', [PostController::class, 'index'])->name('post.index');
-Route::get('post/create', [PostController::class, 'create']);
-Route::post('post', [PostController::class, 'store'])->name('post.store');
-Route::get('post/show/{post}', [PostController::class, 'show'])->name('post.show');
-
-Route::prefix('post')->group(function () {
-    // コメント作成
-    Route::get('{post}/comment/create', [CommentController::class, 'create']);
-    Route::post('{post}/comment', [CommentController::class, 'store'])->name('comment.store');
-
-    // コメント削除
-    Route::delete('{post}/comment/{comment}', [CommentController::class, 'destroy'])->name('comment.destroy');
-});
+Route::post('/comments/{post}', [CommentController::class, 'store'])->name('comments.store');
+Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
 ?>
