@@ -1,8 +1,5 @@
-<!-- resources/views/posts/index.blade.php -->
-
 <h1>Laravel-News</h1>
 
-<!-- 投稿フォーム -->
 <form action="{{ route('posts.store') }}" method="post">
     @csrf
     <label for="title">タイトル:</label>

@@ -1,5 +1,3 @@
-<!-- resources/views/posts/show.blade.php -->
-
 <p><a href="{{ route('posts.index') }}"><h1>Laravel-News</h1></a></p>
 
 <div>
@@ -20,7 +18,6 @@
     </div>
 @endforeach
 
-<!-- コメントフォーム -->
 <form action="{{ route('comments.store', ['post' => $post->id]) }}" method="post">
     @csrf
     <label for="content">コメントを追加:</label>

@@ -9,10 +9,10 @@ class CreatePostsTable extends Migration
     public function up()
     {
         Schema::create('posts', function (Blueprint $table) {
-            $table->id(); // 自動増分ID
-            $table->string('title'); // タイトル
-            $table->text('content'); // 投稿内容
-            $table->timestamps(); // created_at および updated_at タイムスタンプ
+            $table->id();
+            $table->string('title');
+            $table->text('content');
+            $table->timestamps();
         });
     }
 
